@@ -1,0 +1,44 @@
+# Configuration for the Condition C RAG pipeline.
+# All paths are relative to the project root (the folder that contains `rag/`).
+
+# ---- Local LLM (generator) -------------------------------------------------
+# The generator is a local Llama model served by Ollama (https://ollama.com).
+# Nothing here calls a hosted/commercial LLM API.
+llm:
+  provider: ollama
+  base_url: http://localhost:11434
+  # A 4-bit 8B model fits comfortably in 8 GB VRAM (RTX 2070 Super).
+  # Pull it once with:  ollama pull llama3.1:8b
+  model: llama3.1:8b
+  temperature: 0.2        # low temperature -> faithful, less invention
+  num_ctx: 8192           # context window the model is run with
+  num_predict: 2048       # max tokens to generate ("as detailed as possible")
+  request_timeout: 600    # seconds; first call is slow while the model loads
+
+# ---- Embeddings (semantic half of the hybrid retriever) --------------------
+# Runs locally via sentence-transformers. Small, fast, CPU- or GPU-friendly.
+embeddings:
+  model: sentence-transformers/all-MiniLM-L6-v2
+  device: auto            # auto | cpu | cuda
+  batch_size: 64
+
+# ---- Chunking --------------------------------------------------------------
+chunk:
+  size: 1200              # target characters per chunk
+  overlap: 150            # characters of overlap between consecutive chunks
+  min_chars: 200          # drop chunks shorter than this
+
+# ---- Retrieval -------------------------------------------------------------
+retrieval:
+  top_k: 10               # passages handed to the LLM per question
+  bm25_weight: 0.5        # lexical weight in the hybrid score
+  embedding_weight: 0.5   # semantic weight in the hybrid score
+
+# ---- Paths (relative to project root) --------------------------------------
+paths:
+  raw_dir: rag/corpus/raw
+  chunks_file: rag/corpus/chunks.jsonl
+  index_dir: rag/index
+  answers_dir: rag/answers
+  sources_file: rag/sources.yaml
+  tasks_file: rag/tasks.yaml

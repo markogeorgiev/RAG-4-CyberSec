@@ -1,3 +1,13 @@
 .vscode
 .idea
 .venv
+.claude
+
+# RAG pipeline: generated / downloaded artifacts (rebuildable from sources.yaml)
+rag/corpus/raw/
+rag/corpus/chunks.jsonl
+rag/index/
+# Keep rag/answers/ tracked — they are research outputs.
+
+__pycache__/
+*.pyc

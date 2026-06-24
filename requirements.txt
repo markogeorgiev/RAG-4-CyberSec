@@ -1,0 +1,15 @@
+# RAG (Condition C) dependencies
+# Install with:  pip install -r requirements.txt
+#
+# The LLM itself (Llama) is served separately by Ollama (https://ollama.com),
+# so no heavy model weights are pulled by pip. Only the retrieval stack is here.
+
+requests>=2.31          # downloading the corpus + talking to the Ollama HTTP API
+pypdf>=4.0              # NIST SP 800-series PDF text extraction
+beautifulsoup4>=4.12    # CISA HTML page extraction
+lxml>=5.0              # fast parser backend for BeautifulSoup
+rank-bm25>=0.2.2        # lexical (keyword) retrieval
+sentence-transformers>=2.6  # local semantic embeddings (pulls torch)
+numpy>=1.24
+PyYAML>=6.0
+tqdm>=4.66

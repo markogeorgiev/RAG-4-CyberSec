@@ -1,0 +1,159 @@
+# Authoritative corpus manifest for the RAG system.
+#
+# ONLY the four source families specified in the study plan are used:
+#   - NIST guidance documents
+#   - CISA advisories / guidance
+#   - MITRE ATT&CK technique descriptions
+#   - OWASP documentation (Cheat Sheet Series)
+#
+# `type` controls how fetch_corpus.py downloads and how ingest.py extracts text:
+#   pdf       -> binary PDF, text via pypdf
+#   html      -> CISA web page, main text via BeautifulSoup
+#   owasp_md  -> OWASP markdown cheat sheet (raw GitHub)
+#   stix      -> MITRE ATT&CK STIX 2.x bundle (JSON); each technique becomes a doc
+#
+# `tasks` is informational only (which questions a source mainly supports) and
+# does not constrain retrieval — the retriever searches the whole corpus.
+# Any source that fails to download is logged and skipped, so the pipeline is
+# resilient to the occasional moved URL.
+
+sources:
+
+  # ------------------------------------------------------------------ NIST --
+  - id: nist-sp800-63b
+    provider: NIST
+    title: "NIST SP 800-63B: Digital Identity Guidelines — Authentication and Lifecycle Management"
+    type: pdf
+    url: "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63b.pdf"
+    tasks: [T4, T8]
+
+  - id: nist-sp800-46r2
+    provider: NIST
+    title: "NIST SP 800-46r2: Guide to Enterprise Telework, Remote Access, and BYOD Security"
+    type: pdf
+    url: "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-46r2.pdf"
+    tasks: [T3]
+
+  - id: nist-sp800-41r1
+    provider: NIST
+    title: "NIST SP 800-41r1: Guidelines on Firewalls and Firewall Policy"
+    type: pdf
+    url: "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-41r1.pdf"
+    tasks: [T3]
+
+  - id: nist-sp800-83r1
+    provider: NIST
+    title: "NIST SP 800-83r1: Guide to Malware Incident Prevention and Handling for Desktops and Laptops"
+    type: pdf
+    url: "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-83r1.pdf"
+    tasks: [T2, T6]
+
+  - id: nist-sp800-61r2
+    provider: NIST
+    title: "NIST SP 800-61r2: Computer Security Incident Handling Guide"
+    type: pdf
+    url: "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf"
+    tasks: [T2, T7]
+
+  - id: nist-sp800-184
+    provider: NIST
+    title: "NIST SP 800-184: Guide for Cybersecurity Event Recovery"
+    type: pdf
+    url: "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-184.pdf"
+    tasks: [T7, T9]
+
+  # ------------------------------------------------------------------ CISA --
+  - id: cisa-recognize-phishing
+    provider: CISA
+    title: "CISA Secure Our World: Recognize and Report Phishing"
+    type: html
+    url: "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing"
+    tasks: [T1, T10]
+
+  - id: cisa-strong-passwords
+    provider: CISA
+    title: "CISA Secure Our World: Use Strong Passwords"
+    type: html
+    url: "https://www.cisa.gov/secure-our-world/use-strong-passwords"
+    tasks: [T4]
+
+  - id: cisa-turn-on-mfa
+    provider: CISA
+    title: "CISA Secure Our World: Turn On Multifactor Authentication"
+    type: html
+    url: "https://www.cisa.gov/secure-our-world/turn-mfa"
+    tasks: [T8]
+
+  - id: cisa-update-software
+    provider: CISA
+    title: "CISA Secure Our World: Update Software"
+    type: html
+    url: "https://www.cisa.gov/secure-our-world/update-software"
+    tasks: [T5]
+
+  - id: cisa-phishing-guidance
+    provider: CISA
+    title: "CISA Phishing Guidance: Stopping the Attack Cycle at Phase One"
+    type: pdf
+    url: "https://www.cisa.gov/sites/default/files/2023-10/Phishing-Guidance-Stopping-the-Attack-Cycle-at-Phase-One_508c.pdf"
+    tasks: [T1, T2, T10]
+
+  - id: cisa-stopransomware-guide
+    provider: CISA
+    title: "CISA #StopRansomware Guide"
+    type: pdf
+    url: "https://www.cisa.gov/sites/default/files/2023-10/StopRansomware-Guide-508C-v3_1.pdf"
+    tasks: [T7, T9]
+
+  # ----------------------------------------------------------- MITRE ATT&CK --
+  # Enterprise ATT&CK STIX 2.1 bundle. Each `attack-pattern` (technique) is
+  # ingested as its own document, e.g. "MITRE ATT&CK T1566: Phishing".
+  - id: mitre-attack-enterprise
+    provider: MITRE ATT&CK
+    title: "MITRE ATT&CK for Enterprise (STIX bundle)"
+    type: stix
+    url: "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack.json"
+    tasks: [T1, T2, T6, T10]
+
+  # ----------------------------------------------------------------- OWASP --
+  - id: owasp-authentication
+    provider: OWASP
+    title: "OWASP Cheat Sheet: Authentication"
+    type: owasp_md
+    url: "https://raw.githubusercontent.com/OWASP/CheatSheetSeries/master/cheatsheets/Authentication_Cheat_Sheet.md"
+    tasks: [T4]
+
+  - id: owasp-password-storage
+    provider: OWASP
+    title: "OWASP Cheat Sheet: Password Storage"
+    type: owasp_md
+    url: "https://raw.githubusercontent.com/OWASP/CheatSheetSeries/master/cheatsheets/Password_Storage_Cheat_Sheet.md"
+    tasks: [T4]
+
+  - id: owasp-mfa
+    provider: OWASP
+    title: "OWASP Cheat Sheet: Multifactor Authentication"
+    type: owasp_md
+    url: "https://raw.githubusercontent.com/OWASP/CheatSheetSeries/master/cheatsheets/Multifactor_Authentication_Cheat_Sheet.md"
+    tasks: [T8]
+
+  - id: owasp-credential-stuffing
+    provider: OWASP
+    title: "OWASP Cheat Sheet: Credential Stuffing Prevention"
+    type: owasp_md
+    url: "https://raw.githubusercontent.com/OWASP/CheatSheetSeries/master/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.md"
+    tasks: [T4, T8]
+
+  - id: owasp-tls
+    provider: OWASP
+    title: "OWASP Cheat Sheet: Transport Layer Security"
+    type: owasp_md
+    url: "https://raw.githubusercontent.com/OWASP/CheatSheetSeries/master/cheatsheets/Transport_Layer_Security_Cheat_Sheet.md"
+    tasks: [T3, T5]
+
+  - id: owasp-dependency-management
+    provider: OWASP
+    title: "OWASP Cheat Sheet: Vulnerable Dependency Management"
+    type: owasp_md
+    url: "https://raw.githubusercontent.com/OWASP/CheatSheetSeries/master/cheatsheets/Vulnerable_Dependency_Management_Cheat_Sheet.md"
+    tasks: [T5]
