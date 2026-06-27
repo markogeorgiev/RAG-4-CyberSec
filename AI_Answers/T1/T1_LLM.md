@@ -27,5 +27,5 @@ Here are the main signs of a phishing email:
 - Verify independently — go to the company's website directly or call a known number, not one from the email
 - Check with your IT department if it's work-related
 - Report and delete it
-
+ 
 When in doubt, treat any unexpected request for credentials, money, or personal info as suspicious until you've confirmed it through a separate, trusted channel.
