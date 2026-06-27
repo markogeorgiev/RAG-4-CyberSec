@@ -1,0 +1,24 @@
+# The 10 cybersecurity information tasks (Table: Cybersecurity Information Tasks).
+# These are the questions the RAG system answers for Condition C.
+
+tasks:
+  - id: T1
+    question: "How can I recognize a phishing email?"
+  - id: T2
+    question: "What should I do after clicking a suspicious link?"
+  - id: T3
+    question: "How can I secure my home Wi-Fi network?"
+  - id: T4
+    question: "How can I create a strong password policy?"
+  - id: T5
+    question: "How do I verify that software updates are legitimate?"
+  - id: T6
+    question: "What are indicators of malware infection?"
+  - id: T7
+    question: "How should I respond to a ransomware attack?"
+  - id: T8
+    question: "How can I enable multi-factor authentication?"
+  - id: T9
+    question: "How can I securely back up important files?"
+  - id: T10
+    question: "How do I identify social engineering attempts?"
